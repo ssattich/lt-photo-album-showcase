@@ -1,8 +1,10 @@
-import { render, screen } from "@testing-library/react";
+import { render } from "@testing-library/react";
 import App from "./App";
 
-test("renders App paragraph", () => {
+test("gets all photos", () => {
+  jest.spyOn(window, "fetch");
   render(<App />);
-  const paragraphElement = screen.getByText(/App/i);
-  expect(paragraphElement).toBeInTheDocument();
+  expect(window.fetch).toHaveBeenCalledWith(
+    "https://jsonplaceholder.typicode.com/photos"
+  );
 });
