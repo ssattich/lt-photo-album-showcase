@@ -1,9 +1,13 @@
 import { useEffect, useState } from "react";
 import "./App.css";
 import PhotoDetail from "./PhotoDetail";
+import AlbumSelector from "./AlbumSelector";
 
 function App() {
   const [photos, setPhotos] = useState([]);
+  const [photosToDisplay, setPhotosToDisplay] = useState([]);
+  const [albumIds, setAlbumIds] = useState([]);
+  const [selectedAlbumId, setSelectedAlbumId] = useState(null);
 
   useEffect(() => {
     const getAllPhotos = async () => {
@@ -18,9 +22,30 @@ function App() {
     getAllPhotos();
   }, []);
 
+  useEffect(() => {
+    setAlbumIds([...new Set(photos.map((photo) => photo.albumId))]);
+  }, [photos]);
+
+  useEffect(() => {
+    if (selectedAlbumId) {
+      setPhotosToDisplay(
+        photos.filter((photo) => photo.albumId === selectedAlbumId)
+      );
+    } else {
+      setPhotosToDisplay(photos);
+    }
+  }, [photos, selectedAlbumId]);
+
   return (
     <>
-      {photos.map((photo) => (
+      {albumIds.map((albumId) => (
+        <AlbumSelector
+          key={albumId}
+          albumId={albumId}
+          onClick={() => setSelectedAlbumId(albumId)}
+        />
+      ))}
+      {photosToDisplay.map((photo) => (
         <PhotoDetail key={photo.id} photo={photo} />
       ))}
     </>

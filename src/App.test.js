@@ -1,5 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import App from "./App";
+import { act } from "react-dom/test-utils";
 
 describe("App", () => {
   const photos = [
@@ -26,6 +27,8 @@ describe("App", () => {
     },
   ];
 
+  const albumIds = [...new Set(photos.map((photo) => photo.albumId))];
+
   const photosResponse = {
     json: async () => {
       return photos;
@@ -51,13 +54,47 @@ describe("App", () => {
     );
   });
 
-  test("displays ids and titles of photos", async () => {
+  test("displays albums for selection", async () => {
+    for (const albumId of albumIds) {
+      const displayedAlbum = await screen.findByText("Album " + albumId);
+
+      expect(displayedAlbum).toBeInTheDocument();
+    }
+  });
+
+  test("displays ids and titles of all photos when no album selected", async () => {
     for (const photo of photos) {
       const displayedId = await screen.findByText(photo.id.toString());
       const displayedTitle = await screen.findByText(photo.title);
 
       expect(displayedId).toBeInTheDocument();
       expect(displayedTitle).toBeInTheDocument();
+    }
+  });
+
+  test("displays ids and titles of only photos in album when album selected", async () => {
+    const albumId = albumIds[0];
+    const albumSelector = await screen.findByText("Album " + albumId);
+
+    act(() => {
+      albumSelector.click();
+    });
+
+    for (const photo of photos) {
+      const displayedId = await screen
+        .findByText(photo.id.toString())
+        .catch(() => null);
+      const displayedTitle = await screen
+        .findByText(photo.title)
+        .catch(() => null);
+
+      if (photo.albumId === albumId) {
+        expect(displayedId).toBeInTheDocument();
+        expect(displayedTitle).toBeInTheDocument();
+      } else {
+        expect(displayedId).not.toBeInTheDocument();
+        expect(displayedTitle).not.toBeInTheDocument();
+      }
     }
   });
 });
