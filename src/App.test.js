@@ -26,7 +26,6 @@ describe("App", () => {
       url: "photos.com/3",
     },
   ];
-
   const albumIds = [...new Set(photos.map((photo) => photo.albumId))];
 
   const photosResponse = {
@@ -34,7 +33,6 @@ describe("App", () => {
       return photos;
     },
   };
-
   const photosFetch = async () => {
     return photosResponse;
   };
@@ -56,7 +54,7 @@ describe("App", () => {
 
   test("displays albums for selection", async () => {
     for (const albumId of albumIds) {
-      const displayedAlbum = await screen.findByText("Album " + albumId);
+      const displayedAlbum = await findAlbumSelectorByAlbumId(albumId);
 
       expect(displayedAlbum).toBeInTheDocument();
     }
@@ -117,7 +115,7 @@ describe("App", () => {
 
   test("displays ids and titles of only photos in album when album selected", async () => {
     const albumId = albumIds[0];
-    const albumSelector = await screen.findByText("Album " + albumId);
+    const albumSelector = await findAlbumSelectorByAlbumId(albumId);
 
     act(() => {
       albumSelector.click();
@@ -143,7 +141,7 @@ describe("App", () => {
 
   test("displays ids and titles of all photos when album selector clicked twice in a row (selected then deselected)", async () => {
     const albumId = albumIds[0];
-    const albumSelector = await screen.findByText("Album " + albumId);
+    const albumSelector = await findAlbumSelectorByAlbumId(albumId);
 
     act(() => {
       albumSelector.click();
@@ -161,3 +159,7 @@ describe("App", () => {
     }
   });
 });
+
+const findAlbumSelectorByAlbumId = async (albumId) => {
+  return screen.findByText("Album " + albumId);
+};
