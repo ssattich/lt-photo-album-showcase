@@ -140,4 +140,24 @@ describe("App", () => {
       }
     }
   });
+
+  test("displays ids and titles of all photos when album selector clicked twice in a row (selected then deselected)", async () => {
+    const albumId = albumIds[0];
+    const albumSelector = await screen.findByText("Album " + albumId);
+
+    act(() => {
+      albumSelector.click();
+    });
+    act(() => {
+      albumSelector.click();
+    });
+
+    for (const photo of photos) {
+      const displayedId = await screen.findByText(photo.id.toString());
+      const displayedTitle = await screen.findByText(photo.title);
+
+      expect(displayedId).toBeInTheDocument();
+      expect(displayedTitle).toBeInTheDocument();
+    }
+  });
 });

@@ -7,6 +7,7 @@ function App() {
   const [photos, setPhotos] = useState([]);
   const [photosToDisplay, setPhotosToDisplay] = useState([]);
   const [albumIds, setAlbumIds] = useState([]);
+  // TODO: something about the names of these next three as they're WAY too similar
   const [selectableAlbumIds, setSelectableAlbumIds] = useState([]);
   const [searchedAlbumId, setSearchedAlbumId] = useState("");
   const [selectedAlbumId, setSelectedAlbumId] = useState(null);
@@ -64,7 +65,11 @@ function App() {
           <AlbumSelector
             key={albumId}
             albumId={albumId}
-            onClick={() => setSelectedAlbumId(albumId)}
+            onClick={() =>
+              albumId === selectedAlbumId
+                ? setSelectedAlbumId(null)
+                : setSelectedAlbumId(albumId)
+            }
           />
         ))
       ) : (
