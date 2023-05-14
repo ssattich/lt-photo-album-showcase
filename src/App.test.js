@@ -71,9 +71,7 @@ describe("App", () => {
     });
 
     for (const albumId of albumIds) {
-      const displayedAlbum = await screen
-        .findByText("Album " + albumId)
-        .catch(() => null);
+      const displayedAlbum = await findAlbumSelectorByAlbumId(albumId);
 
       if (albumId.toString().includes(searchedAlbumId.toString())) {
         expect(displayedAlbum).toBeInTheDocument();
@@ -157,7 +155,7 @@ describe("App", () => {
 });
 
 const findAlbumSelectorByAlbumId = async (albumId) =>
-  screen.findByText("Album " + albumId);
+  screen.findByText("Album " + albumId).catch(() => null);
 
 const getAlbumSearchBar = () =>
   screen.getByPlaceholderText("Search albums by id...");
