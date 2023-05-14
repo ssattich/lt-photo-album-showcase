@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import App from "./App";
 import { act } from "react-dom/test-utils";
 
@@ -60,6 +60,49 @@ describe("App", () => {
 
       expect(displayedAlbum).toBeInTheDocument();
     }
+  });
+
+  test("displays only searched albums when album search in use", async () => {
+    const searchedAlbumId = albumIds[0];
+    const albumSearchBar = screen.getByPlaceholderText(
+      "Search albums by id..."
+    );
+
+    act(() => {
+      fireEvent.change(albumSearchBar, {
+        target: { value: searchedAlbumId.toString() },
+      });
+    });
+
+    for (const albumId of albumIds) {
+      const displayedAlbum = await screen
+        .findByText("Album " + albumId)
+        .catch(() => null);
+
+      if (albumId.toString().includes(searchedAlbumId.toString())) {
+        expect(displayedAlbum).toBeInTheDocument();
+      } else {
+        expect(displayedAlbum).not.toBeInTheDocument();
+      }
+    }
+  });
+
+  test("displays 'No albums found' message when album search can't display any albums", () => {
+    const searchedAlbumId = "not an id";
+    const albumSearchBar = screen.getByPlaceholderText(
+      "Search albums by id..."
+    );
+
+    act(() => {
+      fireEvent.change(albumSearchBar, {
+        target: { value: searchedAlbumId },
+      });
+    });
+
+    const message = screen.getByText(
+      "No albums found with id " + searchedAlbumId
+    );
+    expect(message).toBeInTheDocument();
   });
 
   test("displays ids and titles of all photos when no album selected", async () => {
