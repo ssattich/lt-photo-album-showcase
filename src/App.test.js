@@ -62,9 +62,7 @@ describe("App", () => {
 
   test("displays only searched albums when album search in use", async () => {
     const searchedAlbumId = albumIds[0];
-    const albumSearchBar = screen.getByPlaceholderText(
-      "Search albums by id..."
-    );
+    const albumSearchBar = getAlbumSearchBar();
 
     act(() => {
       fireEvent.change(albumSearchBar, {
@@ -87,9 +85,7 @@ describe("App", () => {
 
   test("displays 'No albums found' message when album search can't display any albums", () => {
     const searchedAlbumId = "not an id";
-    const albumSearchBar = screen.getByPlaceholderText(
-      "Search albums by id..."
-    );
+    const albumSearchBar = getAlbumSearchBar();
 
     act(() => {
       fireEvent.change(albumSearchBar, {
@@ -160,6 +156,8 @@ describe("App", () => {
   });
 });
 
-const findAlbumSelectorByAlbumId = async (albumId) => {
-  return screen.findByText("Album " + albumId);
-};
+const findAlbumSelectorByAlbumId = async (albumId) =>
+  screen.findByText("Album " + albumId);
+
+const getAlbumSearchBar = () =>
+  screen.getByPlaceholderText("Search albums by id...");
