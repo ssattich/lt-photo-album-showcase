@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import "./App.css";
 import PhotoDetail from "./PhotoDetail";
 import AlbumSelector from "./AlbumSelector";
+import { Grid, TextField, Typography } from "@mui/material";
 
 function App() {
   const [photos, setPhotos] = useState([]);
@@ -54,9 +55,8 @@ function App() {
 
   return (
     <>
-      <input
+      <TextField
         placeholder="Search albums by id..."
-        type="text"
         value={searchedAlbumId}
         onChange={(e) => setSearchedAlbumId(e.target.value)}
       />
@@ -73,11 +73,21 @@ function App() {
           />
         ))
       ) : (
-        <p>No albums found with id {searchedAlbumId}</p>
+        <Typography variant="body1">
+          No albums found with id {searchedAlbumId}
+        </Typography>
       )}
-      {photosToDisplay.map((photo) => (
-        <PhotoDetail key={photo.id} photo={photo} />
-      ))}
+      <Grid
+        container
+        spacing={{ xs: 2, md: 3 }}
+        columns={{ xs: 4, sm: 8, md: 12 }}
+      >
+        {photosToDisplay.map((photo) => (
+          <Grid item key={photo.id} xs={2} sm={4} md={4}>
+            <PhotoDetail photo={photo} />
+          </Grid>
+        ))}
+      </Grid>
     </>
   );
 }

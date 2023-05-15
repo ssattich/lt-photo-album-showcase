@@ -1,9 +1,15 @@
-function PhotoDetail({ photo: { id, title } }) {
+import { Card, CardContent, CardMedia, Typography } from "@mui/material";
+
+function PhotoDetail({ photo: { id, title, thumbnailUrl } }) {
   return (
-    <>
-      <p>{id}</p>
-      <p>{title}</p>
-    </>
+    <Card elevation={3}>
+      <CardMedia component="img" image={thumbnailUrl} alt={title} />
+      <CardContent>
+        <Typography variant="body2">
+          <span>{id}</span> | <span>{title}</span>
+        </Typography>
+      </CardContent>
+    </Card>
   );
 }
 
