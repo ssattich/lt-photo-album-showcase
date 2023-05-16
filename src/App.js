@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import "./App.css";
 import PhotoDetail from "./PhotoDetail";
 import AlbumSelector from "./AlbumSelector";
-import { Grid, TextField, Typography } from "@mui/material";
+import { Grid, Stack, TextField, Typography } from "@mui/material";
 
 function App() {
   const [photos, setPhotos] = useState([]);
@@ -15,6 +15,7 @@ function App() {
 
   useEffect(() => {
     const getAllPhotos = async () => {
+      // TODO: Use skeletons where things are fetched?
       const response = await fetch(
         "https://jsonplaceholder.typicode.com/photos"
       ); // TODO: error handling
@@ -61,27 +62,28 @@ function App() {
         onChange={(e) => setSearchedAlbumId(e.target.value)}
       />
       {selectableAlbumIds.length ? (
-        selectableAlbumIds.map((albumId) => (
-          <AlbumSelector
-            key={albumId}
-            albumId={albumId}
-            onClick={() =>
-              albumId === selectedAlbumId
-                ? setSelectedAlbumId(null)
-                : setSelectedAlbumId(albumId)
-            }
-          />
-        ))
+        <Stack direction="row" spacing={1}>
+          {selectableAlbumIds.map((albumId) => (
+            <AlbumSelector
+              key={albumId}
+              albumId={albumId}
+              photos={photos.filter((photo) => photo.albumId === albumId)}
+              onClick={() =>
+                albumId === selectedAlbumId
+                  ? setSelectedAlbumId(null)
+                  : setSelectedAlbumId(albumId)
+              }
+            />
+          ))}
+        </Stack>
       ) : (
         <Typography variant="body1">
           No albums found with id {searchedAlbumId}
         </Typography>
       )}
-      <Grid
-        container
-        spacing={{ xs: 2, md: 3 }}
-        columns={{ xs: 4, sm: 8, md: 12 }}
-      >
+      <hr />
+      <Grid container spacing={1} columns={{ xs: 4, sm: 8, md: 12 }}>
+        {/* TODO: test different screen sizes */}
         {photosToDisplay.map((photo) => (
           <Grid item key={photo.id} xs={2} sm={4} md={4}>
             <PhotoDetail photo={photo} />
