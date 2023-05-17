@@ -5,7 +5,7 @@ function AlbumImage({ photos }) {
   return (
     <ImageList cols={2}>
       {photos
-        .concat({ id: -1 }, { id: -2 }, { id: -3 }, { id: -4 }) // filler for if < 4 photos
+        .concat([{ id: -1 }, { id: -2 }, { id: -3 }, { id: -4 }]) // filler for if < 4 photos
         .slice(0, 4)
         .map((photo) => (
           <ImageListItem key={photo.id}>
