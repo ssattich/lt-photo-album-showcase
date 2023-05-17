@@ -5,8 +5,8 @@ function AlbumSelector({ albumId, photos, onClick }) {
   return (
     <Card onClick={onClick}>
       <CardMedia component={AlbumImage} photos={photos} />
-      <CardContent>
-        <Typography variant="body2">
+      <CardContent sx={{ padding: "8px", marginBottom: "-12px" }}>
+        <Typography variant="caption" sx={{ lineHeight: 1.2 }}>
           <span>Album {albumId}</span>
         </Typography>
       </CardContent>

@@ -1,13 +1,25 @@
-import { Card, CardContent, CardMedia, Typography } from "@mui/material";
+import { Card, CardContent, CardMedia, Stack, Typography } from "@mui/material";
 
 function PhotoDetail({ photo: { id, title, thumbnailUrl } }) {
   return (
     <Card>
       <CardMedia component="img" src={thumbnailUrl} alt={title} />
-      <CardContent>
-        <Typography variant="body2">
-          {/* TODO: fix thing where title goes under id on second line */}
-          <span>{id}</span> | <span>{title}</span>
+      <CardContent sx={{ padding: "8px", marginBottom: "-12px" }}>
+        {/* TODO: make card typography component? and/or clickable card/content? */}
+        <Typography variant="caption" sx={{ lineHeight: 1.2 }}>
+          <Stack direction="row" spacing={0}>
+            <div>{id}</div>
+            <div
+              style={{
+                borderLeftWidth: "1px",
+                borderLeftStyle: "solid",
+                marginLeft: "5px",
+                paddingLeft: "5px",
+              }}
+            >
+              {title}
+            </div>
+          </Stack>
         </Typography>
       </CardContent>
     </Card>

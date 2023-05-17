@@ -85,7 +85,7 @@ function App() {
       <Grid container spacing={1} columns={{ xs: 4, sm: 8, md: 12 }}>
         {/* TODO: test different screen sizes */}
         {photosToDisplay.map((photo) => (
-          <Grid item key={photo.id} xs={2} sm={4} md={4}>
+          <Grid item key={photo.id} xs={1} sm={2} md={2}>
             <PhotoDetail photo={photo} />
           </Grid>
         ))}
