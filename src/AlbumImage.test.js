@@ -31,7 +31,7 @@ test("uses 'no image' image to guarantee four images if there are fewer than fou
 
   const noImageImg = screen.getByAltText("no image");
   expect(noImageImg).toBeInTheDocument();
-  expect(noImageImg.src).toContain("no-image.jpg");
+  expect(noImageImg.src).toContain("no-image.png");
 
   const allImgs = screen.queryAllByRole("img");
   expect(allImgs.length).toBe(4);
