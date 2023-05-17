@@ -71,27 +71,37 @@ function App() {
         />
       </div>
       <hr />
-      {selectableAlbumIds.length ? (
-        <Stack direction="row" spacing={1}>
-          {selectableAlbumIds.map((albumId) => (
-            <AlbumSelector
-              key={albumId}
-              albumId={albumId}
-              photos={photos.filter((photo) => photo.albumId === albumId)}
-              selected={albumId === selectedAlbumId}
-              onClick={() =>
-                albumId === selectedAlbumId
-                  ? setSelectedAlbumId(null)
-                  : setSelectedAlbumId(albumId)
-              }
-            />
-          ))}
-        </Stack>
-      ) : (
-        <Typography variant="body1">
-          No albums found with id {searchedAlbumId}
-        </Typography>
-      )}
+      <div
+        style={{
+          minHeight: "250px",
+          maxHeight: "250px",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        {selectableAlbumIds.length ? (
+          <Stack direction="row" spacing={1}>
+            {selectableAlbumIds.map((albumId) => (
+              <AlbumSelector
+                key={albumId}
+                albumId={albumId}
+                photos={photos.filter((photo) => photo.albumId === albumId)}
+                selected={albumId === selectedAlbumId}
+                onClick={() =>
+                  albumId === selectedAlbumId
+                    ? setSelectedAlbumId(null)
+                    : setSelectedAlbumId(albumId)
+                }
+              />
+            ))}
+          </Stack>
+        ) : (
+          <Typography variant="body1">
+            No albums found with id {searchedAlbumId}.
+          </Typography>
+        )}
+      </div>
       <hr />
       <Grid container spacing={1} columns={{ xs: 4, sm: 8, md: 12 }}>
         {/* TODO: test different screen sizes */}
