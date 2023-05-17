@@ -26,7 +26,6 @@ describe("App", () => {
       url: "photos.com/3",
     },
   ];
-
   const albumIds = [...new Set(photos.map((photo) => photo.albumId))];
 
   const photosResponse = {
@@ -34,7 +33,6 @@ describe("App", () => {
       return photos;
     },
   };
-
   const photosFetch = async () => {
     return photosResponse;
   };
@@ -56,7 +54,7 @@ describe("App", () => {
 
   test("displays albums for selection", async () => {
     for (const albumId of albumIds) {
-      const displayedAlbum = await screen.findByText("Album " + albumId);
+      const displayedAlbum = await findAlbumSelectorByAlbumId(albumId);
 
       expect(displayedAlbum).toBeInTheDocument();
     }
@@ -64,9 +62,7 @@ describe("App", () => {
 
   test("displays only searched albums when album search in use", async () => {
     const searchedAlbumId = albumIds[0];
-    const albumSearchBar = screen.getByPlaceholderText(
-      "Search albums by id..."
-    );
+    const albumSearchBar = getAlbumSearchBar();
 
     act(() => {
       fireEvent.change(albumSearchBar, {
@@ -75,9 +71,7 @@ describe("App", () => {
     });
 
     for (const albumId of albumIds) {
-      const displayedAlbum = await screen
-        .findByText("Album " + albumId)
-        .catch(() => null);
+      const displayedAlbum = await findAlbumSelectorByAlbumId(albumId);
 
       if (albumId.toString().includes(searchedAlbumId.toString())) {
         expect(displayedAlbum).toBeInTheDocument();
@@ -89,9 +83,7 @@ describe("App", () => {
 
   test("displays 'No albums found' message when album search can't display any albums", () => {
     const searchedAlbumId = "not an id";
-    const albumSearchBar = screen.getByPlaceholderText(
-      "Search albums by id..."
-    );
+    const albumSearchBar = getAlbumSearchBar();
 
     act(() => {
       fireEvent.change(albumSearchBar, {
@@ -107,8 +99,8 @@ describe("App", () => {
 
   test("displays ids and titles of all photos when no album selected", async () => {
     for (const photo of photos) {
-      const displayedId = await screen.findByText(photo.id.toString());
-      const displayedTitle = await screen.findByText(photo.title);
+      const [displayedId, displayedTitle] =
+        await findDisplayedIdAndTitleForPhoto(photo);
 
       expect(displayedId).toBeInTheDocument();
       expect(displayedTitle).toBeInTheDocument();
@@ -117,19 +109,15 @@ describe("App", () => {
 
   test("displays ids and titles of only photos in album when album selected", async () => {
     const albumId = albumIds[0];
-    const albumSelector = await screen.findByText("Album " + albumId);
+    const albumSelector = await findAlbumSelectorByAlbumId(albumId);
 
     act(() => {
       albumSelector.click();
     });
 
     for (const photo of photos) {
-      const displayedId = await screen
-        .findByText(photo.id.toString())
-        .catch(() => null);
-      const displayedTitle = await screen
-        .findByText(photo.title)
-        .catch(() => null);
+      const [displayedId, displayedTitle] =
+        await findDisplayedIdAndTitleForPhoto(photo);
 
       if (photo.albumId === albumId) {
         expect(displayedId).toBeInTheDocument();
@@ -143,7 +131,7 @@ describe("App", () => {
 
   test("displays ids and titles of all photos when album selector clicked twice in a row (selected then deselected)", async () => {
     const albumId = albumIds[0];
-    const albumSelector = await screen.findByText("Album " + albumId);
+    const albumSelector = await findAlbumSelectorByAlbumId(albumId);
 
     act(() => {
       albumSelector.click();
@@ -153,11 +141,22 @@ describe("App", () => {
     });
 
     for (const photo of photos) {
-      const displayedId = await screen.findByText(photo.id.toString());
-      const displayedTitle = await screen.findByText(photo.title);
+      const [displayedId, displayedTitle] =
+        await findDisplayedIdAndTitleForPhoto(photo);
 
       expect(displayedId).toBeInTheDocument();
       expect(displayedTitle).toBeInTheDocument();
     }
   });
 });
+
+const findAlbumSelectorByAlbumId = async (albumId) =>
+  screen.findByText("Album " + albumId).catch(() => null);
+
+const getAlbumSearchBar = () =>
+  screen.getByPlaceholderText("Search albums by id...");
+
+const findDisplayedIdAndTitleForPhoto = async (photo) => [
+  await screen.findByText(photo.id.toString()).catch(() => null),
+  await screen.findByText(photo.title).catch(() => null),
+];
