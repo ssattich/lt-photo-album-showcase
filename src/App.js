@@ -1,9 +1,16 @@
 import { useEffect, useState } from "react";
 import "./App.css";
 import PhotoDetail from "./PhotoDetail";
+import AlbumSelector from "./AlbumSelector";
 
 function App() {
   const [photos, setPhotos] = useState([]);
+  const [photosToDisplay, setPhotosToDisplay] = useState([]);
+  const [albumIds, setAlbumIds] = useState([]);
+  // TODO: something about the names of these next three as they're WAY too similar
+  const [selectableAlbumIds, setSelectableAlbumIds] = useState([]);
+  const [searchedAlbumId, setSearchedAlbumId] = useState("");
+  const [selectedAlbumId, setSelectedAlbumId] = useState(null);
 
   useEffect(() => {
     const getAllPhotos = async () => {
@@ -18,9 +25,57 @@ function App() {
     getAllPhotos();
   }, []);
 
+  useEffect(() => {
+    setAlbumIds([...new Set(photos.map((photo) => photo.albumId))]);
+  }, [photos]);
+
+  useEffect(() => {
+    if (selectedAlbumId) {
+      setPhotosToDisplay(
+        photos.filter((photo) => photo.albumId === selectedAlbumId)
+      );
+    } else {
+      setPhotosToDisplay(photos);
+    }
+  }, [photos, selectedAlbumId]);
+
+  //TODO: put brief comments explaining each useEffect
+  useEffect(() => {
+    if (searchedAlbumId) {
+      setSelectableAlbumIds(
+        albumIds.filter((albumId) =>
+          albumId.toString().includes(searchedAlbumId)
+        )
+      );
+    } else {
+      setSelectableAlbumIds(albumIds);
+    }
+  }, [albumIds, searchedAlbumId]);
+
   return (
     <>
-      {photos.map((photo) => (
+      <input
+        placeholder="Search albums by id..."
+        type="text"
+        value={searchedAlbumId}
+        onChange={(e) => setSearchedAlbumId(e.target.value)}
+      />
+      {selectableAlbumIds.length ? (
+        selectableAlbumIds.map((albumId) => (
+          <AlbumSelector
+            key={albumId}
+            albumId={albumId}
+            onClick={() =>
+              albumId === selectedAlbumId
+                ? setSelectedAlbumId(null)
+                : setSelectedAlbumId(albumId)
+            }
+          />
+        ))
+      ) : (
+        <p>No albums found with id {searchedAlbumId}</p>
+      )}
+      {photosToDisplay.map((photo) => (
         <PhotoDetail key={photo.id} photo={photo} />
       ))}
     </>
