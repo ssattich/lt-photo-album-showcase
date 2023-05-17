@@ -1,15 +1,14 @@
-import { Card, CardContent, CardMedia, Typography } from "@mui/material";
+import { Card, CardMedia } from "@mui/material";
 import AlbumImage from "./AlbumImage";
+import SlimmerCardContent from "./SlimmerCardContent";
 
 function AlbumSelector({ albumId, photos, onClick }) {
   return (
     <Card onClick={onClick}>
       <CardMedia component={AlbumImage} photos={photos} />
-      <CardContent sx={{ padding: "8px", marginBottom: "-12px" }}>
-        <Typography variant="caption" sx={{ lineHeight: 1.2 }}>
-          <span>Album {albumId}</span>
-        </Typography>
-      </CardContent>
+      <SlimmerCardContent>
+        <span>Album {albumId}</span>
+      </SlimmerCardContent>
     </Card>
   );
 }
