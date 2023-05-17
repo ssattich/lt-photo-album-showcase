@@ -78,6 +78,7 @@ function App() {
               key={albumId}
               albumId={albumId}
               photos={photos.filter((photo) => photo.albumId === albumId)}
+              selected={albumId === selectedAlbumId}
               onClick={() =>
                 albumId === selectedAlbumId
                   ? setSelectedAlbumId(null)

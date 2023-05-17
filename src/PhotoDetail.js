@@ -3,7 +3,7 @@ import SlimmerCardContent from "./SlimmerCardContent";
 
 function PhotoDetail({ photo: { id, title, thumbnailUrl } }) {
   return (
-    <Card>
+    <Card className="clickable-card">
       <CardMedia component="img" src={thumbnailUrl} alt={title} />
       <SlimmerCardContent>
         <Stack direction="row" spacing={0}>

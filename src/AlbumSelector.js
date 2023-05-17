@@ -2,9 +2,13 @@ import { Card, CardMedia } from "@mui/material";
 import AlbumImage from "./AlbumImage";
 import SlimmerCardContent from "./SlimmerCardContent";
 
-function AlbumSelector({ albumId, photos, onClick }) {
+function AlbumSelector({ albumId, photos, selected, onClick }) {
   return (
-    <Card onClick={onClick}>
+    <Card
+      onClick={onClick}
+      className="clickable-card"
+      sx={selected ? { backgroundColor: "#1976d2" } : {}}
+    >
       <CardMedia component={AlbumImage} photos={photos} />
       <SlimmerCardContent>
         <span>Album {albumId}</span>
