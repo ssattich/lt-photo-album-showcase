@@ -5,6 +5,7 @@ import AlbumSelector from "./AlbumSelector";
 import { Grid, Stack, TextField, Typography } from "@mui/material";
 
 function App() {
+  // TODO: clickable photos
   const [photos, setPhotos] = useState([]);
   const [photosToDisplay, setPhotosToDisplay] = useState([]);
   const [albumIds, setAlbumIds] = useState([]);
@@ -19,7 +20,7 @@ function App() {
       const response = await fetch(
         "https://jsonplaceholder.typicode.com/photos"
       ); // TODO: error handling
-      // TODO: make this var a const again and stop truncating like this
+      // TODO: make this var a const again and stop truncating like this (pagination?)
       var json = await response.json();
       json.splice(500, 5000);
       setPhotos(json);
@@ -56,11 +57,20 @@ function App() {
 
   return (
     <>
-      <TextField
-        placeholder="Search albums by id..."
-        value={searchedAlbumId}
-        onChange={(e) => setSearchedAlbumId(e.target.value)}
-      />
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <TextField
+          placeholder="Search albums by id..."
+          value={searchedAlbumId}
+          onChange={(e) => setSearchedAlbumId(e.target.value)}
+        />
+      </div>
+      <hr />
       {selectableAlbumIds.length ? (
         <Stack direction="row" spacing={1}>
           {selectableAlbumIds.map((albumId) => (
