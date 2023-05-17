@@ -7,7 +7,7 @@ function PhotoDetail({ photo: { id, title, thumbnailUrl } }) {
       <CardMedia component="img" src={thumbnailUrl} alt={title} />
       <SlimmerCardContent>
         <Stack direction="row" spacing={0}>
-          <span>{id}</span>
+          <span style={{ margin: "auto" }}>{id}</span>
           <span
             style={{
               borderLeftWidth: "1px",
