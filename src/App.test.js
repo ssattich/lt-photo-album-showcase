@@ -70,7 +70,7 @@ describe("App", () => {
     });
 
     const message = screen.getByText(
-      "No albums found with id " + searchedAlbumId
+      "No albums found with id " + searchedAlbumId + "."
     );
     expect(message).toBeInTheDocument();
   });
