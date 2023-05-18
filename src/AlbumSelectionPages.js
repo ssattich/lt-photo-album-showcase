@@ -77,13 +77,22 @@ function AlbumSelectionPages({
           <></>
         )}
       </div>
-      <Pagination
-        // TODO: handle zero case
-        count={Math.ceil(selectableAlbumIds.length / maxItemsPerPage)}
-        shape="rounded"
-        page={page}
-        onChange={(event, page) => setPage(page)}
-      />
+      <div
+        style={{
+          marginTop: "8px",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <Pagination
+          // TODO: handle zero case
+          count={Math.ceil(selectableAlbumIds.length / maxItemsPerPage)}
+          shape="rounded"
+          page={page}
+          onChange={(event, page) => setPage(page)}
+        />
+      </div>
     </>
   );
 }
