@@ -7,16 +7,18 @@
 
 **`npm start`** will run the app in development mode at [http://localhost:3000](http://localhost:3000). A tab navigated to the app should automatically open in your default browser.
 
-The page will reload if you make any changes to the app, and any lint errors will print to the console.
+The page will reload if you make any changes to the app, and any lint errors will print to the console. Press ctrl+c in the console to undeploy.
 
 ## Other available scripts
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app). As such, the following scripts are available to run in the project directory, in addition to **`npm start`**:
 
-- **`npm test`**\
+- **`npm test`**
+
   Launches the test runner in the interactive watch mode.
 
-- **`npm run build`**\
+- **`npm run build`**
+
   Per React:
 
   > Builds the app for production to the `build` folder.\
@@ -25,7 +27,8 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
   > The build is minified and the filenames include the hashes.\
   > Your app is ready to be deployed!
 
-- **`npm run eject`**\
+- **`npm run eject`**
+
   The odds of us wanting to run this one are slim. Per React:
 
   > **Note: this is a one-way operation. Once you `eject`, you can't go back!**
