@@ -10,7 +10,10 @@ function PhotosPages({ showSkeletons, photos, selectedAlbumId }) {
 
   const getSkeletonArray = () => {
     const skeletonArray = [];
-    for (let i = 0; i < MAX_ITEMS_PER_PAGE; i++) skeletonArray.push({ id: i });
+    const itemsPerRow = window.innerWidth < 960 ? 4 : 6;
+    const approxHeight = (window.innerWidth - 8) / itemsPerRow + 102;
+    for (let i = 0; i < MAX_ITEMS_PER_PAGE; i++)
+      skeletonArray.push({ id: i, height: approxHeight });
     return skeletonArray;
   };
 
@@ -30,8 +33,7 @@ function PhotosPages({ showSkeletons, photos, selectedAlbumId }) {
         ).map((photo) => (
           <Grid item key={photo.id} xs={1} sm={2} md={2}>
             {showSkeletons ? (
-              // TODO: height
-              <Skeleton variant="rounded" />
+              <Skeleton variant="rounded" height={photo.height} />
             ) : (
               <PhotoDetail photo={photo} />
             )}
