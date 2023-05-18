@@ -24,7 +24,6 @@ function PhotosPages({ showSkeletons, photos, selectedAlbumId }) {
   return (
     <>
       <Grid container spacing={1} columns={{ xs: 4, sm: 8, md: 12 }}>
-        {/* TODO: test different screen sizes */}
         {(showSkeletons
           ? getSkeletonArray()
           : photos.slice(
