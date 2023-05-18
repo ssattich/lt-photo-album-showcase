@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import "./App.css";
-import { TextField } from "@mui/material";
+import { Grid, TextField } from "@mui/material";
 import AlbumSelectionPages from "./AlbumSelectionPages";
 import PhotosPages from "./PhotosPages";
 
@@ -70,19 +70,19 @@ function App() {
     </div>
   ) : (
     <>
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        <TextField
-          placeholder="Search albums by id..."
-          value={searchedAlbumId}
-          onChange={(e) => setSearchedAlbumId(e.target.value)}
-        />
-      </div>
+      {/* Using Grid to make search bar full screen width for smaller screens and one third screen width for larger screens. */}
+      <Grid container spacing={1} columns={{ xs: 3, sm: 6, md: 12 }}>
+        <Grid item xs={0} sm={0} md={4} />
+        <Grid item xs={3} sm={6} md={4}>
+          <TextField
+            sx={{ width: "100%" }}
+            placeholder="Search albums by id..."
+            value={searchedAlbumId}
+            onChange={(e) => setSearchedAlbumId(e.target.value)}
+          />
+        </Grid>
+        <Grid item xs={0} sm={0} md={4} />
+      </Grid>
       <hr />
       <AlbumSelectionPages
         albumIds={selectableAlbumIds}
