@@ -10,7 +10,8 @@ function PhotosPages({ showSkeletons, photos, selectedAlbumId }) {
 
   const getSkeletonArray = () => {
     const skeletonArray = [];
-    const itemsPerRow = window.innerWidth < 960 ? 4 : 6;
+    const itemsPerRow =
+      window.innerWidth < 600 ? 2 : window.innerWidth < 960 ? 4 : 6;
     const approxHeight = (window.innerWidth - 8) / itemsPerRow + 102;
     for (let i = 0; i < MAX_ITEMS_PER_PAGE; i++)
       skeletonArray.push({ id: i, height: approxHeight });
@@ -23,7 +24,6 @@ function PhotosPages({ showSkeletons, photos, selectedAlbumId }) {
   return (
     <>
       <Grid container spacing={1} columns={{ xs: 4, sm: 8, md: 12 }}>
-        {/* TODO: test different screen sizes */}
         {(showSkeletons
           ? getSkeletonArray()
           : photos.slice(
@@ -31,7 +31,7 @@ function PhotosPages({ showSkeletons, photos, selectedAlbumId }) {
               MAX_ITEMS_PER_PAGE * page
             )
         ).map((photo) => (
-          <Grid item key={photo.id} xs={1} sm={2} md={2}>
+          <Grid item key={photo.id} xs={2} sm={2} md={2}>
             {showSkeletons ? (
               <Skeleton variant="rounded" height={photo.height} />
             ) : (

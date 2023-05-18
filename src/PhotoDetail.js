@@ -1,14 +1,22 @@
 import { Card, CardMedia, Stack } from "@mui/material";
 import SlimmerCardContent from "./SlimmerCardContent";
 
-// TODO: fix large screen ID weirdness
 function PhotoDetail({ photo: { id, title, thumbnailUrl } }) {
   return (
-    <Card className="clickable-card">
+    <Card>
       <CardMedia component="img" src={thumbnailUrl} alt={title} />
       <SlimmerCardContent>
         <Stack direction="row" spacing={0}>
-          <span style={{ margin: "auto" }}>{id}</span>
+          <span
+            style={{
+              marginTop: "auto",
+              marginBottom: "auto",
+              maxWidth: "30px",
+              textAlign: "center",
+            }}
+          >
+            {id}
+          </span>
           <span
             style={{
               borderLeftWidth: "1px",

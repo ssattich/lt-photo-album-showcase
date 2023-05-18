@@ -7,8 +7,8 @@ function AlbumSelectionPages({
   albumIds,
   showSkeletons,
   photos,
-  selectedAlbumId,
-  setSelectedAlbumId,
+  selectedId,
+  setSelectedId,
   searchedAlbumId,
 }) {
   const calculateMaxItemsPerPage = () =>
@@ -29,9 +29,11 @@ function AlbumSelectionPages({
   };
 
   // Respond to screen width changes
-  window.addEventListener("resize", () =>
-    setMaxItemsPerPage(calculateMaxItemsPerPage())
-  );
+  window.addEventListener("resize", () => {
+    const prevMaxItems = maxItemsPerPage;
+    setMaxItemsPerPage(calculateMaxItemsPerPage());
+    if (prevMaxItems !== maxItemsPerPage) setPage(1);
+  });
 
   // Reset page when list of selectable albums changes
   useEffect(() => setPage(1), [albumIds.length]);
@@ -60,11 +62,11 @@ function AlbumSelectionPages({
                       photos={photos.filter(
                         (photo) => photo.albumId === albumId
                       )}
-                      selected={albumId === selectedAlbumId}
+                      selected={albumId === selectedId}
                       onClick={() =>
-                        albumId === selectedAlbumId
-                          ? setSelectedAlbumId(null)
-                          : setSelectedAlbumId(albumId)
+                        albumId === selectedId
+                          ? setSelectedId(null)
+                          : setSelectedId(albumId)
                       }
                     />
                   ))}
@@ -77,20 +79,11 @@ function AlbumSelectionPages({
           <></>
         )}
       </div>
-      <div
-        style={{
-          marginTop: "8px",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        <PrettierPagination
-          count={Math.ceil(albumIds.length / maxItemsPerPage)}
-          page={page}
-          onChange={(event, page) => setPage(page)}
-        />
-      </div>
+      <PrettierPagination
+        count={Math.ceil(albumIds.length / maxItemsPerPage)}
+        page={page}
+        onChange={(event, page) => setPage(page)}
+      />
     </>
   );
 }
