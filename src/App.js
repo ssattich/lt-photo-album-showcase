@@ -13,10 +13,9 @@ function App() {
   const [photosToDisplay, setPhotosToDisplay] = useState([]);
   const [photosFetched, setPhotosFetched] = useState(false);
   const [albumIds, setAlbumIds] = useState([]);
-  // TODO: something about the names of these next three as they're WAY too similar
   const [selectableAlbumIds, setSelectableAlbumIds] = useState([]);
   const [searchedAlbumId, setSearchedAlbumId] = useState("");
-  const [selectedAlbumId, setSelectedAlbumId] = useState(null);
+  const [selectedId, setSelectedId] = useState(null);
 
   let photosFetchFailed = useRef(false);
 
@@ -41,14 +40,14 @@ function App() {
 
   // Whenever album selection changes, filter displayed photos accordingly
   useEffect(() => {
-    if (selectedAlbumId) {
+    if (selectedId) {
       setPhotosToDisplay(
-        photos.filter((photo) => photo.albumId === selectedAlbumId)
+        photos.filter((photo) => photo.albumId === selectedId)
       );
     } else {
       setPhotosToDisplay(photos);
     }
-  }, [photos, selectedAlbumId]);
+  }, [photos, selectedId]);
 
   // When user uses album search, filter selectable albums accordingly
   useEffect(() => {
@@ -89,15 +88,15 @@ function App() {
         albumIds={selectableAlbumIds}
         showSkeletons={!photosFetched}
         photos={photos}
-        selectedAlbumId={selectedAlbumId}
-        setSelectedAlbumId={setSelectedAlbumId}
+        selectedId={selectedId}
+        setSelectedId={setSelectedId}
         searchedAlbumId={searchedAlbumId}
       />
       <hr />
       <PhotosPages
         showSkeletons={!photosFetched}
         photos={photosToDisplay}
-        selectedAlbumId={selectedAlbumId}
+        selectedAlbumId={selectedId}
       />
     </>
   );

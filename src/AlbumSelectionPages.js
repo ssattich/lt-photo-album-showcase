@@ -7,8 +7,8 @@ function AlbumSelectionPages({
   albumIds,
   showSkeletons,
   photos,
-  selectedAlbumId,
-  setSelectedAlbumId,
+  selectedId,
+  setSelectedId,
   searchedAlbumId,
 }) {
   const calculateMaxItemsPerPage = () =>
@@ -60,11 +60,11 @@ function AlbumSelectionPages({
                       photos={photos.filter(
                         (photo) => photo.albumId === albumId
                       )}
-                      selected={albumId === selectedAlbumId}
+                      selected={albumId === selectedId}
                       onClick={() =>
-                        albumId === selectedAlbumId
-                          ? setSelectedAlbumId(null)
-                          : setSelectedAlbumId(albumId)
+                        albumId === selectedId
+                          ? setSelectedId(null)
+                          : setSelectedId(albumId)
                       }
                     />
                   ))}
