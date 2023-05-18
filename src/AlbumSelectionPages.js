@@ -3,14 +3,15 @@ import AlbumSelector from "./AlbumSelector";
 import { useEffect, useState } from "react";
 
 function AlbumSelectionPages({
-  selectableAlbumIds,
+  albumIds,
   showSkeletons,
   photos,
   selectedAlbumId,
   setSelectedAlbumId,
   searchedAlbumId,
 }) {
-  const calculateMaxItemsPerPage = () => Math.floor(window.innerWidth / 185);
+  const calculateMaxItemsPerPage = () =>
+    Math.max(1, Math.floor(window.innerWidth / 185));
 
   const [maxItemsPerPage, setMaxItemsPerPage] = useState(
     calculateMaxItemsPerPage()
@@ -21,7 +22,7 @@ function AlbumSelectionPages({
     const skeletonArray = [];
     for (let i = 0; i < maxItemsPerPage; i++)
       skeletonArray.push(
-        <Skeleton variant="rounded" width={175} height={248} />
+        <Skeleton key={i} variant="rounded" width={175} height={248} />
       );
     return skeletonArray;
   };
@@ -34,7 +35,7 @@ function AlbumSelectionPages({
   // Reset page when list of selectable albums changes
   useEffect(() => {
     setPage(1);
-  }, [selectableAlbumIds.length]);
+  }, [albumIds.length]);
 
   return (
     <>
@@ -47,11 +48,11 @@ function AlbumSelectionPages({
           justifyContent: "center",
         }}
       >
-        {selectableAlbumIds.length || showSkeletons ? (
+        {albumIds.length || showSkeletons ? (
           <Stack direction="row" spacing={1}>
             {showSkeletons
               ? getSkeletonArray()
-              : selectableAlbumIds
+              : albumIds
                   .slice(maxItemsPerPage * (page - 1), maxItemsPerPage * page)
                   .map((albumId) => (
                     <AlbumSelector
@@ -86,7 +87,7 @@ function AlbumSelectionPages({
         }}
       >
         <Pagination
-          count={Math.ceil(selectableAlbumIds.length / maxItemsPerPage)}
+          count={Math.ceil(albumIds.length / maxItemsPerPage)}
           shape="rounded"
           page={page}
           onChange={(event, page) => setPage(page)}

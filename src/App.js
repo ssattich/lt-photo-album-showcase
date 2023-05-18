@@ -73,7 +73,7 @@ function App() {
       </div>
       <hr />
       <AlbumSelectionPages
-        selectableAlbumIds={selectableAlbumIds}
+        albumIds={selectableAlbumIds}
         showSkeletons={!photosFetched}
         photos={photos}
         selectedAlbumId={selectedAlbumId}
