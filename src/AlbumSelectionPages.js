@@ -86,7 +86,6 @@ function AlbumSelectionPages({
         }}
       >
         <Pagination
-          // TODO: handle zero case
           count={Math.ceil(selectableAlbumIds.length / maxItemsPerPage)}
           shape="rounded"
           page={page}
