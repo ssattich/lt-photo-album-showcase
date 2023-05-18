@@ -3,7 +3,7 @@ import AlbumImage from "./AlbumImage";
 import SlimmerCardContent from "./SlimmerCardContent";
 
 function AlbumSelector({ albumId, photos, selected, onClick }) {
-  const cardStyle = { maxWidth: "175px" };
+  const cardStyle = { maxWidth: "175px", maxHeight: "248px" };
 
   return (
     <Card
