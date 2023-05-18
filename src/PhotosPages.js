@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import PrettierPagination from "./PrettierPagination";
 
 function PhotosPages({ showSkeletons, photos, selectedAlbumId }) {
-  const MAX_ITEMS_PER_PAGE = 4; // TODO
+  const MAX_ITEMS_PER_PAGE = 60;
 
   const [page, setPage] = useState(1);
 

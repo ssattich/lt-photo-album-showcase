@@ -1,6 +1,7 @@
 import { Card, CardMedia, Stack } from "@mui/material";
 import SlimmerCardContent from "./SlimmerCardContent";
 
+// TODO: fix large screen ID weirdness
 function PhotoDetail({ photo: { id, title, thumbnailUrl } }) {
   return (
     <Card className="clickable-card">
