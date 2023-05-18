@@ -20,6 +20,7 @@ function App() {
 
   let photosFetchFailed = useRef(false);
 
+  // Fetch photos on first render; don't re-fetch on any rerender
   useEffect(() => {
     const getAllPhotos = async () => {
       const response = await fetch(FETCH_PHOTOS_FROM).catch(() => {
@@ -33,10 +34,12 @@ function App() {
     getAllPhotos();
   }, [FETCH_PHOTOS_FROM]);
 
+  // Get list of album ids from full list of photos
   useEffect(() => {
     setAlbumIds([...new Set(photos.map((photo) => photo.albumId))]);
   }, [photos]);
 
+  // Whenever album selection changes, filter displayed photos accordingly
   useEffect(() => {
     if (selectedAlbumId) {
       setPhotosToDisplay(
@@ -47,7 +50,7 @@ function App() {
     }
   }, [photos, selectedAlbumId]);
 
-  //TODO: put brief comments explaining each useEffect
+  // When user uses album search, filter selectable albums accordingly
   useEffect(() => {
     if (searchedAlbumId) {
       setSelectableAlbumIds(
