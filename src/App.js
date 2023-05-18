@@ -8,7 +8,6 @@ function App() {
   const PHOTO_SITE_NAME = "jsonplaceholder.typicode.com/photos";
   const FETCH_PHOTOS_FROM = "https://" + PHOTO_SITE_NAME;
 
-  // TODO: clickable photos
   const [photos, setPhotos] = useState([]);
   const [photosToDisplay, setPhotosToDisplay] = useState([]);
   const [photosFetched, setPhotosFetched] = useState(false);
