@@ -20,9 +20,7 @@ function App() {
       const response = await fetch(
         "https://jsonplaceholder.typicode.com/photos"
       ); // TODO: error handling
-      // TODO: make this var a const again and stop truncating like this (pagination?)
-      var json = await response.json();
-      json.splice(500, 5000);
+      const json = await response.json();
       setPhotos(json);
       setPhotosFetched(true);
     };
