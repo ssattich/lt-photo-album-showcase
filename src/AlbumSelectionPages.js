@@ -29,9 +29,11 @@ function AlbumSelectionPages({
   };
 
   // Respond to screen width changes
-  window.addEventListener("resize", () =>
-    setMaxItemsPerPage(calculateMaxItemsPerPage())
-  );
+  window.addEventListener("resize", () => {
+    const prevMaxItems = maxItemsPerPage;
+    setMaxItemsPerPage(calculateMaxItemsPerPage());
+    if (prevMaxItems !== maxItemsPerPage) setPage(1);
+  });
 
   // Reset page when list of selectable albums changes
   useEffect(() => setPage(1), [albumIds.length]);
