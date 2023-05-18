@@ -1,22 +1,24 @@
 import { Grid, Skeleton } from "@mui/material";
 import PhotoDetail from "./PhotoDetail";
 
-function PhotosPages({ photosFetched, photosToDisplay }) {
+function PhotosPages({ showSkeletons, photos }) {
+  const getSkeletonArray = () => {
+    const skeletonArray = [];
+    // TODO: use max number of pics per page
+    for (let i = 0; i < 100; i++) skeletonArray.push({ id: i });
+    return skeletonArray;
+  };
+
   return (
     <Grid container spacing={1} columns={{ xs: 4, sm: 8, md: 12 }}>
       {/* TODO: test different screen sizes */}
-      {(photosFetched
-        ? photosToDisplay
-        : // another pagination TODO
-          // TODO post-pagination: skeleton array consts?
-          [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }]
-      ).map((photo) => (
+      {(showSkeletons ? getSkeletonArray() : photos).map((photo) => (
         <Grid item key={photo.id} xs={1} sm={2} md={2}>
-          {photosFetched ? (
-            <PhotoDetail photo={photo} />
-          ) : (
+          {showSkeletons ? (
             // TODO: height
             <Skeleton variant="rounded" />
+          ) : (
+            <PhotoDetail photo={photo} />
           )}
         </Grid>
       ))}
