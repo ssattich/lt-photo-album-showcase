@@ -1,6 +1,7 @@
-import { Grid, Pagination, Skeleton } from "@mui/material";
+import { Grid, Skeleton } from "@mui/material";
 import PhotoDetail from "./PhotoDetail";
 import { useEffect, useState } from "react";
+import PrettierPagination from "./PrettierPagination";
 
 function PhotosPages({ showSkeletons, photos, selectedAlbumId }) {
   const MAX_ITEMS_PER_PAGE = 4; // TODO
@@ -37,9 +38,8 @@ function PhotosPages({ showSkeletons, photos, selectedAlbumId }) {
           </Grid>
         ))}
       </Grid>
-      <Pagination
+      <PrettierPagination
         count={Math.ceil(photos.length / MAX_ITEMS_PER_PAGE)}
-        shape="rounded"
         page={page}
         onChange={(event, page) => setPage(page)}
       />

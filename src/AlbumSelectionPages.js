@@ -1,6 +1,7 @@
-import { Pagination, Skeleton, Stack, Typography } from "@mui/material";
+import { Skeleton, Stack, Typography } from "@mui/material";
 import AlbumSelector from "./AlbumSelector";
 import { useEffect, useState } from "react";
+import PrettierPagination from "./PrettierPagination";
 
 function AlbumSelectionPages({
   albumIds,
@@ -84,9 +85,8 @@ function AlbumSelectionPages({
           justifyContent: "center",
         }}
       >
-        <Pagination
+        <PrettierPagination
           count={Math.ceil(albumIds.length / maxItemsPerPage)}
-          shape="rounded"
           page={page}
           onChange={(event, page) => setPage(page)}
         />
