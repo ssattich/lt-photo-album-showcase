@@ -33,9 +33,7 @@ function AlbumSelectionPages({
   );
 
   // Reset page when list of selectable albums changes
-  useEffect(() => {
-    setPage(1);
-  }, [albumIds.length]);
+  useEffect(() => setPage(1), [albumIds.length]);
 
   return (
     <>

@@ -81,7 +81,11 @@ function App() {
         searchedAlbumId={searchedAlbumId}
       />
       <hr />
-      <PhotosPages showSkeletons={!photosFetched} photos={photosToDisplay} />
+      <PhotosPages
+        showSkeletons={!photosFetched}
+        photos={photosToDisplay}
+        selectedAlbumId={selectedAlbumId}
+      />
     </>
   );
 }
