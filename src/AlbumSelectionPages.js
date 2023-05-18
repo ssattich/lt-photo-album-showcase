@@ -79,20 +79,11 @@ function AlbumSelectionPages({
           <></>
         )}
       </div>
-      <div
-        style={{
-          marginTop: "8px",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        <PrettierPagination
-          count={Math.ceil(albumIds.length / maxItemsPerPage)}
-          page={page}
-          onChange={(event, page) => setPage(page)}
-        />
-      </div>
+      <PrettierPagination
+        count={Math.ceil(albumIds.length / maxItemsPerPage)}
+        page={page}
+        onChange={(event, page) => setPage(page)}
+      />
     </>
   );
 }
