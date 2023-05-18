@@ -10,9 +10,17 @@ function AlbumSelectionPages({
   setSelectedAlbumId,
   searchedAlbumId,
 }) {
-  const maxItemsPerPage = Math.floor(window.innerWidth / 185);
+  const calculateMaxItemsPerPage = () => Math.floor(window.innerWidth / 185);
 
+  const [maxItemsPerPage, setMaxItemsPerPage] = useState(
+    calculateMaxItemsPerPage()
+  );
   const [page, setPage] = useState(1);
+
+  // Respond to screen width changes
+  window.addEventListener("resize", () =>
+    setMaxItemsPerPage(calculateMaxItemsPerPage())
+  );
 
   // Reset page when list of selectable albums changes
   useEffect(() => {
