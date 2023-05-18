@@ -1,6 +1,6 @@
 import { Pagination, Skeleton, Stack, Typography } from "@mui/material";
 import AlbumSelector from "./AlbumSelector";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function AlbumSelectionPages({
   selectableAlbumIds,
@@ -10,9 +10,14 @@ function AlbumSelectionPages({
   setSelectedAlbumId,
   searchedAlbumId,
 }) {
-  const MAX_ITEMS_PER_PAGE = 4;
+  const maxItemsPerPage = Math.floor(window.innerWidth / 185);
 
   const [page, setPage] = useState(1);
+
+  // Reset page when list of selectable albums changes
+  useEffect(() => {
+    setPage(1);
+  }, [selectableAlbumIds.length]);
 
   return (
     <>
@@ -29,10 +34,7 @@ function AlbumSelectionPages({
           <Stack direction="row" spacing={1}>
             {photosFetched
               ? selectableAlbumIds
-                  .slice(
-                    MAX_ITEMS_PER_PAGE * (page - 1),
-                    MAX_ITEMS_PER_PAGE * page
-                  )
+                  .slice(maxItemsPerPage * (page - 1), maxItemsPerPage * page)
                   .map((albumId) => (
                     <AlbumSelector
                       key={albumId}
@@ -53,16 +55,19 @@ function AlbumSelectionPages({
                   <Skeleton variant="rounded" width={175} height={248} />
                 ))}
           </Stack>
-        ) : (
+        ) : searchedAlbumId ? (
           <Typography variant="body1">
             No albums found with id {searchedAlbumId}.
           </Typography>
+        ) : (
+          <></>
         )}
       </div>
       <Pagination
         // TODO: handle zero case
-        count={Math.ceil(selectableAlbumIds.length / MAX_ITEMS_PER_PAGE)}
+        count={Math.ceil(selectableAlbumIds.length / maxItemsPerPage)}
         shape="rounded"
+        page={page}
         onChange={(event, page) => setPage(page)}
       />
     </>
