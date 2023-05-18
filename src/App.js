@@ -31,7 +31,7 @@ function App() {
       setPhotosFetched(true);
     };
     getAllPhotos();
-  }, []);
+  }, [FETCH_PHOTOS_FROM]);
 
   useEffect(() => {
     setAlbumIds([...new Set(photos.map((photo) => photo.albumId))]);
