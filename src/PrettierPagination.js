@@ -15,6 +15,7 @@ function PrettierPagination({ count, page, onChange }) {
 
   return (
     <div
+      className="pretty-pagination"
       style={{
         margin: "8px",
         display: "flex",

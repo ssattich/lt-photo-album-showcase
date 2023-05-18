@@ -6,3 +6,16 @@ body {
 .clickable-card {
   cursor: pointer;
 }
+
+/* The original small pagination components looked too spaced out for my liking, especially around their ellipses. */
+.pretty-pagination {
+  .css-1hfyor7-MuiPaginationItem-root {
+    padding: 0;
+    margin: 0;
+  }
+
+  .css-w05zow-MuiButtonBase-root-MuiPaginationItem-root {
+    padding: 0;
+    margin: 0;
+  }
+}
