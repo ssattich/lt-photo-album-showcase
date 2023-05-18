@@ -1,45 +1,24 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import App from "./App";
-import { act } from "react-dom/test-utils";
+import { act } from "@testing-library/react";
+import MockData from "./MockData";
 
 describe("App", () => {
-  const photos = [
-    {
-      albumId: 1,
-      id: 1,
-      thumbnailUrl: "thumbs.com/1",
-      title: "Photo 1",
-      url: "photos.com/1",
-    },
-    {
-      albumId: 1,
-      id: 2,
-      thumbnailUrl: "thumbs.com/2",
-      title: "Photo 2",
-      url: "photos.com/2",
-    },
-    {
-      albumId: 2,
-      id: 3,
-      thumbnailUrl: "thumbs.com/3",
-      title: "Photo 3",
-      url: "photos.com/3",
-    },
-  ];
+  const photos = MockData();
   const albumIds = [...new Set(photos.map((photo) => photo.albumId))];
 
   const photosResponse = {
-    json: async () => {
-      return photos;
-    },
+    json: async () => photos,
   };
-  const photosFetch = async () => {
-    return photosResponse;
-  };
+  const photosFetch = async () => photosResponse;
 
   beforeEach(() => {
     jest.spyOn(window, "fetch").mockImplementation(photosFetch);
     render(<App />);
+    // wait until fetch is complete and elements are populated before running tests
+    return waitFor(() =>
+      expect(queryAlbumSelectorByAlbumId(photos[0].albumId)).toBeInTheDocument()
+    );
   });
 
   afterEach(() => {
@@ -52,15 +31,14 @@ describe("App", () => {
     );
   });
 
-  test("displays albums for selection", async () => {
+  test("displays albums for selection", () => {
     for (const albumId of albumIds) {
-      const displayedAlbum = await findAlbumSelectorByAlbumId(albumId);
-
+      const displayedAlbum = queryAlbumSelectorByAlbumId(albumId);
       expect(displayedAlbum).toBeInTheDocument();
     }
   });
 
-  test("displays only searched albums when album search in use", async () => {
+  test("displays only searched albums when album search in use", () => {
     const searchedAlbumId = albumIds[0];
     const albumSearchBar = getAlbumSearchBar();
 
@@ -71,7 +49,7 @@ describe("App", () => {
     });
 
     for (const albumId of albumIds) {
-      const displayedAlbum = await findAlbumSelectorByAlbumId(albumId);
+      const displayedAlbum = queryAlbumSelectorByAlbumId(albumId);
 
       if (albumId.toString().includes(searchedAlbumId.toString())) {
         expect(displayedAlbum).toBeInTheDocument();
@@ -92,24 +70,23 @@ describe("App", () => {
     });
 
     const message = screen.getByText(
-      "No albums found with id " + searchedAlbumId
+      "No albums found with id " + searchedAlbumId + "."
     );
     expect(message).toBeInTheDocument();
   });
 
-  test("displays ids and titles of all photos when no album selected", async () => {
+  test("displays ids and titles of all photos when no album selected", () => {
     for (const photo of photos) {
       const [displayedId, displayedTitle] =
-        await findDisplayedIdAndTitleForPhoto(photo);
-
+        queryDisplayedIdAndTitleForPhoto(photo);
       expect(displayedId).toBeInTheDocument();
       expect(displayedTitle).toBeInTheDocument();
     }
   });
 
-  test("displays ids and titles of only photos in album when album selected", async () => {
+  test("displays ids and titles of only photos in album when album selected", () => {
     const albumId = albumIds[0];
-    const albumSelector = await findAlbumSelectorByAlbumId(albumId);
+    const albumSelector = queryAlbumSelectorByAlbumId(albumId);
 
     act(() => {
       albumSelector.click();
@@ -117,7 +94,7 @@ describe("App", () => {
 
     for (const photo of photos) {
       const [displayedId, displayedTitle] =
-        await findDisplayedIdAndTitleForPhoto(photo);
+        queryDisplayedIdAndTitleForPhoto(photo);
 
       if (photo.albumId === albumId) {
         expect(displayedId).toBeInTheDocument();
@@ -129,9 +106,9 @@ describe("App", () => {
     }
   });
 
-  test("displays ids and titles of all photos when album selector clicked twice in a row (selected then deselected)", async () => {
+  test("displays ids and titles of all photos when album selector clicked twice in a row (selected then deselected)", () => {
     const albumId = albumIds[0];
-    const albumSelector = await findAlbumSelectorByAlbumId(albumId);
+    const albumSelector = queryAlbumSelectorByAlbumId(albumId);
 
     act(() => {
       albumSelector.click();
@@ -142,21 +119,20 @@ describe("App", () => {
 
     for (const photo of photos) {
       const [displayedId, displayedTitle] =
-        await findDisplayedIdAndTitleForPhoto(photo);
-
+        queryDisplayedIdAndTitleForPhoto(photo);
       expect(displayedId).toBeInTheDocument();
       expect(displayedTitle).toBeInTheDocument();
     }
   });
 });
 
-const findAlbumSelectorByAlbumId = async (albumId) =>
-  screen.findByText("Album " + albumId).catch(() => null);
+const queryAlbumSelectorByAlbumId = (albumId) =>
+  screen.queryByText("Album " + albumId);
 
 const getAlbumSearchBar = () =>
   screen.getByPlaceholderText("Search albums by id...");
 
-const findDisplayedIdAndTitleForPhoto = async (photo) => [
-  await screen.findByText(photo.id.toString()).catch(() => null),
-  await screen.findByText(photo.title).catch(() => null),
+const queryDisplayedIdAndTitleForPhoto = (photo) => [
+  screen.queryByText(photo.id.toString()),
+  screen.queryByText(photo.title),
 ];
