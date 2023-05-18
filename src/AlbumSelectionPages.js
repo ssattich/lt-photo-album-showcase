@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 
 function AlbumSelectionPages({
   selectableAlbumIds,
-  photosFetched,
+  showSkeletons,
   photos,
   selectedAlbumId,
   setSelectedAlbumId,
@@ -16,6 +16,15 @@ function AlbumSelectionPages({
     calculateMaxItemsPerPage()
   );
   const [page, setPage] = useState(1);
+
+  const getSkeletonArray = () => {
+    const skeletonArray = [];
+    for (let i = 0; i < maxItemsPerPage; i++)
+      skeletonArray.push(
+        <Skeleton variant="rounded" width={175} height={248} />
+      );
+    return skeletonArray;
+  };
 
   // Respond to screen width changes
   window.addEventListener("resize", () =>
@@ -38,10 +47,11 @@ function AlbumSelectionPages({
           justifyContent: "center",
         }}
       >
-        {selectableAlbumIds.length || !photosFetched ? (
+        {selectableAlbumIds.length || showSkeletons ? (
           <Stack direction="row" spacing={1}>
-            {photosFetched
-              ? selectableAlbumIds
+            {showSkeletons
+              ? getSkeletonArray()
+              : selectableAlbumIds
                   .slice(maxItemsPerPage * (page - 1), maxItemsPerPage * page)
                   .map((albumId) => (
                     <AlbumSelector
@@ -57,11 +67,7 @@ function AlbumSelectionPages({
                           : setSelectedAlbumId(albumId)
                       }
                     />
-                  ))
-              : [1, 2, 3, 4, 5, 6, 7, 8, 8, 10].map(() => (
-                  // another pagination todo
-                  <Skeleton variant="rounded" width={175} height={248} />
-                ))}
+                  ))}
           </Stack>
         ) : searchedAlbumId ? (
           <Typography variant="body1">

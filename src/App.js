@@ -74,7 +74,7 @@ function App() {
       <hr />
       <AlbumSelectionPages
         selectableAlbumIds={selectableAlbumIds}
-        photosFetched={photosFetched}
+        showSkeletons={!photosFetched}
         photos={photos}
         selectedAlbumId={selectedAlbumId}
         setSelectedAlbumId={setSelectedAlbumId}
