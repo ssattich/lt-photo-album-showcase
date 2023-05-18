@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import "./App.css";
-import PhotoDetail from "./PhotoDetail";
-import AlbumSelector from "./AlbumSelector";
-import { Grid, Skeleton, Stack, TextField, Typography } from "@mui/material";
+import { TextField } from "@mui/material";
+import AlbumSelectionPages from "./AlbumSelectionPages";
+import PhotosPages from "./PhotosPages";
 
 function App() {
   // TODO: clickable photos
@@ -20,9 +20,7 @@ function App() {
       const response = await fetch(
         "https://jsonplaceholder.typicode.com/photos"
       ); // TODO: error handling
-      // TODO: make this var a const again and stop truncating like this (pagination?)
-      var json = await response.json();
-      json.splice(500, 5000);
+      const json = await response.json();
       setPhotos(json);
       setPhotosFetched(true);
     };
@@ -72,61 +70,20 @@ function App() {
         />
       </div>
       <hr />
-      <div
-        style={{
-          minHeight: "250px",
-          maxHeight: "250px",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        {selectableAlbumIds.length || !photosFetched ? (
-          <Stack direction="row" spacing={1}>
-            {photosFetched
-              ? selectableAlbumIds.map((albumId) => (
-                  <AlbumSelector
-                    key={albumId}
-                    albumId={albumId}
-                    photos={photos.filter((photo) => photo.albumId === albumId)}
-                    selected={albumId === selectedAlbumId}
-                    onClick={() =>
-                      albumId === selectedAlbumId
-                        ? setSelectedAlbumId(null)
-                        : setSelectedAlbumId(albumId)
-                    }
-                  />
-                ))
-              : [1, 2, 3, 4, 5, 6, 7, 8, 8, 10].map(() => (
-                  // another pagination todo
-                  <Skeleton variant="rounded" width={175} height={248} />
-                ))}
-          </Stack>
-        ) : (
-          <Typography variant="body1">
-            No albums found with id {searchedAlbumId}.
-          </Typography>
-        )}
-      </div>
+      <AlbumSelectionPages
+        albumIds={selectableAlbumIds}
+        showSkeletons={!photosFetched}
+        photos={photos}
+        selectedAlbumId={selectedAlbumId}
+        setSelectedAlbumId={setSelectedAlbumId}
+        searchedAlbumId={searchedAlbumId}
+      />
       <hr />
-      <Grid container spacing={1} columns={{ xs: 4, sm: 8, md: 12 }}>
-        {/* TODO: test different screen sizes */}
-        {(photosFetched
-          ? photosToDisplay
-          : // another pagination TODO
-            // TODO post-pagination: skeleton array consts?
-            [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }]
-        ).map((photo) => (
-          <Grid item key={photo.id} xs={1} sm={2} md={2}>
-            {photosFetched ? (
-              <PhotoDetail photo={photo} />
-            ) : (
-              // TODO: height
-              <Skeleton variant="rounded" />
-            )}
-          </Grid>
-        ))}
-      </Grid>
+      <PhotosPages
+        showSkeletons={!photosFetched}
+        photos={photosToDisplay}
+        selectedAlbumId={selectedAlbumId}
+      />
     </>
   );
 }
