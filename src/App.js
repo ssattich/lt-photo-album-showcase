@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import "./App.css";
-import PhotoDetail from "./PhotoDetail";
-import { Grid, Skeleton, TextField } from "@mui/material";
+import { TextField } from "@mui/material";
 import AlbumSelectionPages from "./AlbumSelectionPages";
+import PhotosPages from "./PhotosPages";
 
 function App() {
   // TODO: clickable photos
@@ -81,24 +81,10 @@ function App() {
         searchedAlbumId={searchedAlbumId}
       />
       <hr />
-      <Grid container spacing={1} columns={{ xs: 4, sm: 8, md: 12 }}>
-        {/* TODO: test different screen sizes */}
-        {(photosFetched
-          ? photosToDisplay
-          : // another pagination TODO
-            // TODO post-pagination: skeleton array consts?
-            [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }]
-        ).map((photo) => (
-          <Grid item key={photo.id} xs={1} sm={2} md={2}>
-            {photosFetched ? (
-              <PhotoDetail photo={photo} />
-            ) : (
-              // TODO: height
-              <Skeleton variant="rounded" />
-            )}
-          </Grid>
-        ))}
-      </Grid>
+      <PhotosPages
+        photosFetched={photosFetched}
+        photosToDisplay={photosToDisplay}
+      />
     </>
   );
 }
